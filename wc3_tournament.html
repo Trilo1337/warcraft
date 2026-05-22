@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC3 Frozen Throne Turnier</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ice-blue: #7ecfff;
+    --deep-blue: #0a1628;
+    --mid-blue: #0d2244;
+    --frost: #b8e8ff;
+    --gold: #c8a84b;
+    --gold-light: #f0d070;
+    --dark-gold: #7a6020;
+    --red-accent: #8b1a1a;
+    --text-light: #d8eeff;
+    --shadow-dark: rgba(0,0,0,0.85);
+    --panel-bg: rgba(5, 20, 45, 0.92);
+    --border-ice: rgba(126,207,255,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep-blue);
+    color: var(--text-light);
+    font-family: 'Cinzel', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── BACKGROUND ── */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,80,180,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 80%, rgba(10,60,120,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, rgba(0,40,100,0.2) 0%, transparent 60%),
+      linear-gradient(180deg, #050e1f 0%, #0a1628 40%, #071020 100%);
+  }
+  .bg-stars {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(180,230,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(180,230,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 8%, rgba(200,240,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 25%, rgba(180,230,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 55%, rgba(180,230,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 88% 12%, rgba(220,245,255,1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 70%, rgba(180,230,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 85%, rgba(180,230,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 92% 78%, rgba(200,240,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 60%, rgba(180,230,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 68% 90%, rgba(180,230,255,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 15% 92%, rgba(220,245,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 35%, rgba(180,230,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 48%, rgba(180,230,255,0.4) 0%, transparent 100%);
+  }
+
+  /* ── SNOWFLAKES SVG ── */
+  .snowflake {
+    position: fixed; z-index: 1; pointer-events: none;
+    opacity: 0;
+    animation: snowfall linear infinite;
+  }
+  @keyframes snowfall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+    5%   { opacity: 0.7; }
+    95%  { opacity: 0.3; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative; z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    text-align: center;
+    padding: 40px 20px 0;
+    position: relative;
+  }
+  .header-emblem {
+    font-size: 64px;
+    line-height: 1;
+    filter: drop-shadow(0 0 20px rgba(126,207,255,0.8));
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { filter: drop-shadow(0 0 15px rgba(126,207,255,0.6)); }
+    50%      { filter: drop-shadow(0 0 35px rgba(126,207,255,1)) drop-shadow(0 0 60px rgba(80,160,255,0.5)); }
+  }
+  .site-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(22px, 4vw, 42px);
+    font-weight: 900;
+    color: var(--ice-blue);
+    text-shadow:
+      0 0 20px rgba(126,207,255,0.9),
+      0 0 40px rgba(80,160,255,0.5),
+      2px 2px 0 #0a2040,
+      -1px -1px 0 #0a2040;
+    letter-spacing: 4px;
+    margin: 12px 0 4px;
+    line-height: 1.2;
+  }
+  .site-subtitle {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(10px, 2vw, 16px);
+    color: var(--gold-light);
+    letter-spacing: 8px;
+    text-shadow: 0 0 10px rgba(200,168,75,0.7);
+    text-transform: uppercase;
+  }
+
+  /* ── DECORATIVE DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .divider-line {
+    flex: 1;
+    max-width: 300px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .divider-gem { font-size: 18px; color: var(--ice-blue); }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: linear-gradient(180deg, #1a3060 0%, #0d1f40 50%, #091830 100%);
+    border: 1px solid var(--border-ice);
+    border-bottom: 2px solid var(--gold);
+    color: var(--ice-blue);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 10px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    position: relative;
+    clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+  }
+  .tab-btn:hover {
+    background: linear-gradient(180deg, #2a4a80 0%, #1a3060 50%, #0d2040 100%);
+    color: var(--frost);
+    border-color: var(--ice-blue);
+    text-shadow: 0 0 8px rgba(126,207,255,0.8);
+    box-shadow: 0 0 15px rgba(126,207,255,0.3);
+  }
+  .tab-btn.active {
+    background: linear-gradient(180deg, #2a5090 0%, #1a3570 50%, #102040 100%);
+    color: var(--gold-light);
+    border-color: var(--gold);
+    border-bottom-color: var(--gold-light);
+    text-shadow: 0 0 10px rgba(240,208,112,0.8);
+    box-shadow: 0 0 20px rgba(200,168,75,0.4), inset 0 0 20px rgba(200,168,75,0.05);
+  }
+
+  /* ── PANELS ── */
+  .panel {
+    display: none;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-ice);
+    border-radius: 2px;
+    padding: 30px;
+    position: relative;
+    box-shadow:
+      0 0 40px rgba(0,60,160,0.3),
+      0 0 80px rgba(0,30,80,0.2),
+      inset 0 0 60px rgba(0,20,60,0.5);
+  }
+  .panel.active { display: block; animation: fadePanel 0.4s ease; }
+  @keyframes fadePanel {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* corner ornaments */
+  .panel::before, .panel::after,
+  .panel-inner::before, .panel-inner::after {
+    content: '❄';
+    position: absolute;
+    font-size: 18px;
+    color: var(--ice-blue);
+    opacity: 0.5;
+  }
+  .panel::before  { top: 8px;  left: 12px; }
+  .panel::after   { top: 8px;  right: 12px; }
+  .panel-inner::before { bottom: 8px; left: 12px; }
+  .panel-inner::after  { bottom: 8px; right: 12px; }
+  .panel-inner { position: relative; }
+
+  /* ── HOME PANEL ── */
+  .home-banner {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .banner-rune-row {
+    font-size: 28px;
+    letter-spacing: 12px;
+    color: var(--ice-blue);
+    opacity: 0.5;
+    margin-bottom: 8px;
+  }
+  .banner-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(18px, 3.5vw, 34px);
+    font-weight: 900;
+    color: var(--gold-light);
+    text-shadow: 0 0 25px rgba(200,168,75,0.8), 2px 2px 4px #000;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .banner-tagline {
+    font-size: 13px;
+    color: var(--frost);
+    letter-spacing: 4px;
+    opacity: 0.8;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .info-card {
+    background: linear-gradient(135deg, rgba(10,30,70,0.8), rgba(5,15,40,0.9));
+    border: 1px solid rgba(126,207,255,0.25);
+    border-top: 2px solid var(--gold);
+    padding: 16px 18px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(126,207,255,0.15);
+  }
+  .info-card-icon { font-size: 28px; margin-bottom: 8px; }
+  .info-card-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .info-card-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ice-blue);
+    text-shadow: 0 0 8px rgba(126,207,255,0.5);
+  }
+
+  .announcement-box {
+    background: linear-gradient(135deg, rgba(139,26,26,0.15), rgba(10,30,70,0.8));
+    border: 1px solid rgba(139,26,26,0.4);
+    border-left: 3px solid #c83030;
+    padding: 16px 20px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .announcement-box::before {
+    content: '⚔';
+    position: absolute;
+    left: -14px; top: 50%; transform: translateY(-50%);
+    background: var(--deep-blue);
+    padding: 4px;
+    font-size: 16px;
+  }
+  .ann-title {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #e05050;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .ann-text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-light);
+    font-family: 'Cinzel', serif;
+  }
+  .ann-text strong { color: var(--gold-light); }
+
+  .prizes-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .prize-badge {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(20,40,80,0.9), rgba(8,20,50,0.9));
+    border: 1px solid var(--border-ice);
+    padding: 14px 10px;
+  }
+  .prize-place { font-size: 22px; margin-bottom: 4px; }
+  .prize-label { font-size: 9px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+  .prize-amount { font-size: 14px; font-weight: 700; color: var(--frost); margin-top: 4px; }
+
+  .lore-text {
+    font-size: 13px;
+    line-height: 1.9;
+    color: rgba(200,230,255,0.75);
+    border-left: 2px solid rgba(126,207,255,0.2);
+    padding-left: 16px;
+    font-style: italic;
+    margin: 20px 0;
+  }
+
+  /* ── BRACKET PANEL ── */
+  .bracket-title {
+    text-align: center;
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(14px, 2.5vw, 22px);
+    color: var(--gold-light);
+    text-shadow: 0 0 15px rgba(200,168,75,0.6);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+  }
+  .bracket-subtitle {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--ice-blue);
+    opacity: 0.7;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .bracket-container {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  .bracket {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    min-width: 900px;
+    position: relative;
+  }
+
+  .round {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .round-label {
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding: 6px 8px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(200,168,75,0.2);
+    margin-bottom: 4px;
+  }
+
+  .match-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .match {
+    background: linear-gradient(180deg, rgba(15,35,70,0.95), rgba(8,20,50,0.95));
+    border: 1px solid rgba(126,207,255,0.2);
+    width: 170px;
+    margin: 3px 8px;
+    position: relative;
+    transition: box-shadow 0.2s;
+  }
+  .match:hover {
+    border-color: rgba(126,207,255,0.5);
+    box-shadow: 0 0 15px rgba(126,207,255,0.15);
+  }
+
+  .slot {
+    display: flex;
+    align-items: center;
+    padding: 7px 10px;
+    gap: 8px;
+    position: relative;
+  }
+  .slot + .slot {
+    border-top: 1px solid rgba(126,207,255,0.1);
+  }
+  .slot-race { font-size: 16px; flex-shrink: 0; }
+  .slot-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .slot-name.tbd {
+    color: rgba(180,210,255,0.35);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .slot.winner .slot-name {
+    color: var(--gold-light);
+    text-shadow: 0 0 6px rgba(200,168,75,0.5);
+  }
+  .slot.winner::after {
+    content: '★';
+    font-size: 10px;
+    color: var(--gold);
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* connector lines */
+  .connector {
+    width: 20px;
+    position: relative;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+  .connector svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
+  .round-group {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Final match styling */
+  .match.final {
+    width: 190px;
+    border: 1px solid rgba(200,168,75,0.5);
+    box-shadow: 0 0 25px rgba(200,168,75,0.2);
+  }
+  .match.final .slot-name { color: var(--gold-light); }
+
+  .champion-box {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(200,168,75,0.1), rgba(10,30,70,0.9));
+    border: 1px solid rgba(200,168,75,0.4);
+    margin-top: 30px;
+    position: relative;
+  }
+  .champion-box::before {
+    content: '👑';
+    font-size: 36px;
+    display: block;
+    margin-bottom: 8px;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+  .champion-label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .champion-name {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 20px;
+    color: var(--gold-light);
+    text-shadow: 0 0 20px rgba(200,168,75,0.8);
+  }
+
+  /* ── REGISTER PANEL ── */
+  .register-intro {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .register-intro p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(200,230,255,0.75);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .register-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .form-field {
+    margin-bottom: 16px;
+  }
+  .form-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .form-input, .form-select {
+    width: 100%;
+    background: rgba(5,15,40,0.8);
+    border: 1px solid rgba(126,207,255,0.25);
+    border-bottom: 2px solid var(--border-ice);
+    color: var(--text-light);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--ice-blue);
+    box-shadow: 0 0 15px rgba(126,207,255,0.2);
+  }
+  .form-select option { background: #0d1f40; }
+
+  .race-selector {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .race-opt {
+    background: rgba(10,25,55,0.8);
+    border: 1px solid rgba(126,207,255,0.2);
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .race-opt:hover { border-color: var(--ice-blue); background: rgba(20,50,100,0.8); }
+  .race-opt.selected {
+    border-color: var(--gold);
+    background: rgba(30,60,120,0.9);
+    box-shadow: 0 0 12px rgba(200,168,75,0.25);
+  }
+  .race-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+  .race-name { font-size: 9px; letter-spacing: 1px; color: var(--frost); }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(180deg, #2a5090 0%, #1a3570 40%, #102040 100%);
+    border: 1px solid var(--gold);
+    border-bottom: 2px solid var(--gold-light);
+    color: var(--gold-light);
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    text-shadow: 0 0 8px rgba(200,168,75,0.5);
+    margin-top: 8px;
+  }
+  .submit-btn:hover {
+    background: linear-gradient(180deg, #3a60a0 0%, #2a4580 40%, #1a3060 100%);
+    box-shadow: 0 0 20px rgba(200,168,75,0.3);
+    transform: translateY(-1px);
+  }
+
+  /* ── RULES PANEL ── */
+  .rules-list {
+    list-style: none;
+    counter-reset: rules;
+  }
+  .rules-list li {
+    counter-increment: rules;
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(126,207,255,0.08);
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(200,230,255,0.8);
+  }
+  .rules-list li::before {
+    content: counter(rules);
+    min-width: 26px; height: 26px;
+    background: linear-gradient(135deg, #1a3570, #0d2040);
+    border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: var(--gold-light);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .rules-list strong { color: var(--ice-blue); }
+
+  .section-heading {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 14px;
+    color: var(--ice-blue);
+    letter-spacing: 2px;
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-heading::before, .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(126,207,255,0.3));
+  }
+  .section-heading::after { background: linear-gradient(90deg, rgba(126,207,255,0.3), transparent); }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    text-align: center;
+    padding: 30px 0 10px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(126,207,255,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── SCROLL BAR ── */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: rgba(5,15,40,0.8); }
+  ::-webkit-scrollbar-thumb { background: rgba(126,207,255,0.3); border-radius: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .panel { padding: 18px 14px; }
+    .match { width: 140px; }
+    .match.final { width: 155px; }
+    .slot-name { font-size: 10px; }
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(10,30,70,0.98), rgba(5,15,40,0.98));
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 14px 28px;
+    z-index: 9999;
+    display: none;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(200,168,75,0.4);
+    animation: toastIn 0.3s ease;
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(15px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- BG LAYERS -->
+<div class="bg-layer"></div>
+<div class="bg-stars"></div>
+
+<!-- SNOWFLAKES -->
+<script>
+const flakes = ['❄','❅','❆','*','·'];
+const container = document.body;
+for(let i=0;i<28;i++){
+  const s = document.createElement('span');
+  s.className='snowflake';
+  s.textContent = flakes[Math.floor(Math.random()*flakes.length)];
+  s.style.cssText = `
+    left:${Math.random()*100}%;
+    font-size:${8+Math.random()*14}px;
+    color:rgba(180,230,255,${0.3+Math.random()*0.5});
+    animation-duration:${8+Math.random()*14}s;
+    animation-delay:${-Math.random()*20}s;
+  `;
+  container.appendChild(s);
+}
+</script>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-emblem">🧊</div>
+    <h1 class="site-title">Warcraft III: The Frozen Throne</h1>
+    <div class="site-subtitle">⚔ &nbsp; Offizielles Community Turnier &nbsp; ⚔</div>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-gem">❄</span>
+      <span class="divider-gem" style="color:var(--gold)">✦</span>
+      <span class="divider-gem">❄</span>
+      <div class="divider-line" style="background:linear-gradient(90deg,var(--gold),transparent)"></div>
+    </div>
+  </header>
+
+  <!-- NAV TABS -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('home',this)">⚔ Übersicht</button>
+    <button class="tab-btn" onclick="showTab('bracket',this)">🏆 Turnierplan</button>
+    <button class="tab-btn" onclick="showTab('register',this)">📜 Anmelden</button>
+    <button class="tab-btn" onclick="showTab('rules',this)">⚖ Regeln</button>
+  </nav>
+
+  <!-- ══════════ HOME PANEL ══════════ -->
+  <div id="panel-home" class="panel active">
+    <div class="panel-inner">
+
+      <div class="home-banner">
+        <div class="banner-rune-row">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ</div>
+        <div class="banner-title">
+          ❄ Das Ewige Eis Turnier ❄<br>
+          <span style="font-size:0.6em;color:var(--ice-blue)">Season I — 2025</span>
+        </div>
+        <div class="banner-tagline">Von Lordaeron bis Northrend — nur einer überlebt</div>
+      </div>
+
+      <!-- Announcement -->
+      <div class="announcement-box">
+        <div class="ann-title">☠ Ankündigung</div>
+        <div class="ann-text">
+          Der <strong>Lichkönig</strong> ruft die mächtigsten Helden der Welt zusammen —
+          nicht zur Vernichtung, sondern zum Wettstreit. <strong>16 Krieger</strong> werden
+          auf den gefrorenen Schlachtfeldern Nordrendes gegeneinander antreten.
+          Nur der Stärkste wird auf dem <strong>Eisernen Thron</strong> sitzen.
+          <br><br>
+          Das Turnier beginnt am <strong>15. Februar 2025</strong>. Registrierungen werden
+          bis zum <strong>10. Februar 2025</strong> entgegengenommen.
+        </div>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">📅</div>
+          <div class="info-card-label">Datum</div>
+          <div class="info-card-value">15. Feb. 2025</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🗺️</div>
+          <div class="info-card-label">Format</div>
+          <div class="info-card-value">1v1 • Single Elim.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">⚔️</div>
+          <div class="info-card-label">Teilnehmer</div>
+          <div class="info-card-value">16 Kämpfer</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🌍</div>
+          <div class="info-card-label">Server</div>
+          <div class="info-card-value">EU West</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🏰</div>
+          <div class="info-card-label">Maps</div>
+          <div class="info-card-value">Echo Isles & mehr</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🎮</div>
+          <div class="info-card-label">Version</div>
+          <div class="info-card-value">WC3 Reforged</div>
+        </div>
+      </div>
+
+      <!-- Prizes -->
+      <div class="section-heading">Preispool</div>
+      <div class="prizes-row">
+        <div class="prize-badge">
+          <div class="prize-place">🥇</div>
+          <div class="prize-label">1. Platz</div>
+          <div class="prize-amount">200 €</div>
+        </div>
+        <div class="prize-badge">
+          <div class="prize-place">🥈</div>
+          <div class="prize-label">2. Platz</div>
+          <div class="prize-amount">100 €</div>
+        </div>
+        <div class="prize-badge">
+          <div class="prize-place">🥉</div>
+          <div class="prize-label">3. Platz</div>
+          <div class="prize-amount">50 €</div>
+        </div>
+        <div class="prize-badge">
+          <div class="prize-place">⭐</div>
+          <div class="prize-label">Top 8</div>
+          <div class="prize-amount">Ruhm</div>
+        </div>
+      </div>
+
+      <!-- Lore text -->
+      <p class="lore-text">
+        „Arthas hat die Zitadelle Eiskronenfestung verlassen und die Tore für jene geöffnet,
+        die mutig genug sind, sich dem Frost zu stellen. Vier Völker, ein Ziel —
+        die Herrschaft über das ewige Eis. Welche Fraktion wirst du in die
+        Unsterblichkeit führen?"
+      </p>
+
+      <!-- Race Grid -->
+      <div class="section-heading">Die Völker</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px;">
+        <div class="info-card" style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px">🧝</div>
+          <div>
+            <div class="info-card-label">Menschen</div>
+            <div class="info-card-value" style="font-size:13px">Allianz von Lordaeron</div>
+            <div style="font-size:11px;color:rgba(200,230,255,0.5);margin-top:4px;">Paladine & Erzbischöfe</div>
+          </div>
+        </div>
+        <div class="info-card" style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px">💀</div>
+          <div>
+            <div class="info-card-label">Untote</div>
+            <div class="info-card-value" style="font-size:13px">Geißel der Vernichtung</div>
+            <div style="font-size:11px;color:rgba(200,230,255,0.5);margin-top:4px;">Totenritter & Liche</div>
+          </div>
+        </div>
+        <div class="info-card" style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px">🪓</div>
+          <div>
+            <div class="info-card-label">Orks</div>
+            <div class="info-card-value" style="font-size:13px">Horde von Durotar</div>
+            <div style="font-size:11px;color:rgba(200,230,255,0.5);margin-top:4px;">Schamanen & Krieger</div>
+          </div>
+        </div>
+        <div class="info-card" style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px">🌿</div>
+          <div>
+            <div class="info-card-label">Nachtelfen</div>
+            <div class="info-card-value" style="font-size:13px">Wächter von Ashenvale</div>
+            <div style="font-size:11px;color:rgba(200,230,255,0.5);margin-top:4px;">Druiden & Waldläufer</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel-inner -->
+  </div><!-- /panel-home -->
+
+  <!-- ══════════ BRACKET PANEL ══════════ -->
+  <div id="panel-bracket" class="panel">
+    <div class="panel-inner">
+      <div class="bracket-title">⚔ Turnierplan ⚔</div>
+      <div class="bracket-subtitle">Single Elimination • 16 Teilnehmer</div>
+
+      <div class="bracket-container">
+        <div class="bracket" id="bracket"></div>
+      </div>
+
+      <div class="champion-box" id="championBox">
+        <div class="champion-label">Sieger des Turniers</div>
+        <div class="champion-name" id="championName">— Noch nicht ermittelt —</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ REGISTER PANEL ══════════ -->
+  <div id="panel-register" class="panel">
+    <div class="panel-inner">
+      <div class="register-intro">
+        <div class="section-heading">Dein Weg zum Thron</div>
+        <p>Fülle das Formular aus und tritt dem Turnier bei. Es stehen noch <strong style="color:var(--gold-light)" id="slotsLeft">16</strong> von 16 Plätzen zur Verfügung. Die Registrierung ist bis zum <strong style="color:var(--ice-blue)">10. Februar 2025</strong> offen.</p>
+      </div>
+
+      <div class="register-form">
+        <div class="form-field">
+          <label class="form-label">Battle.net Benutzername</label>
+          <input class="form-input" type="text" placeholder="z.B. Arthas#2401" id="inputName">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Wunsch-Rasse</label>
+          <div class="race-selector" id="racePicker">
+            <div class="race-opt" onclick="selectRace(this,'Mensch')">
+              <span class="race-icon">🧝</span>
+              <span class="race-name">Mensch</span>
+            </div>
+            <div class="race-opt" onclick="selectRace(this,'Untot')">
+              <span class="race-icon">💀</span>
+              <span class="race-name">Untot</span>
+            </div>
+            <div class="race-opt" onclick="selectRace(this,'Ork')">
+              <span class="race-icon">🪓</span>
+              <span class="race-name">Ork</span>
+            </div>
+            <div class="race-opt" onclick="selectRace(this,'Nachtelf')">
+              <span class="race-icon">🌿</span>
+              <span class="race-name">Nachtelf</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Zeitzone / Region</label>
+          <select class="form-select">
+            <option>Europe / Central (CET)</option>
+            <option>Europe / Western (WET)</option>
+            <option>Europe / Eastern (EET)</option>
+            <option>America / Eastern (EST)</option>
+            <option>America / Pacific (PST)</option>
+            <option>Asia / Seoul (KST)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Erfahrungslevel</label>
+          <select class="form-select">
+            <option>Anfänger — Ich lerne noch</option>
+            <option>Kämpfer — Gelegentlich kompetitiv</option>
+            <option>Held — Regelmäßig Elo-Spiele</option>
+            <option>Legende — High-Level / Veteran</option>
+          </select>
+        </div>
+        <button class="submit-btn" onclick="handleRegister()">
+          ❄ Für das Turnier anmelden ❄
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ RULES PANEL ══════════ -->
+  <div id="panel-rules" class="panel">
+    <div class="panel-inner">
+
+      <div class="section-heading">Allgemeine Regeln</div>
+      <ul class="rules-list">
+        <li>Alle Spiele werden auf <strong>EU West Servern</strong> ausgetragen. Verbindungsprobleme entschuldigen keinen Abbruch.</li>
+        <li>Beide Spieler müssen <strong>5 Minuten vor dem Matchbeginn</strong> online und bereit sein. Wer nicht erscheint, verliert durch Forfeit.</li>
+        <li>Das Turnier wird im <strong>Single-Elimination</strong>-Format ausgetragen. Jede Runde ist ein Best-of-1, das Finale ist Best-of-3.</li>
+        <li>Der Verlierer darf die Startrasse nicht wechseln. Der Gewinner kann seine Rasse frei wählen.</li>
+        <li>Alle offiziellen <strong>Ladder-Maps</strong> der Saison sind erlaubt. Die Karte wird vom Verlierer der Münzwerfung gewählt.</li>
+        <li>Cheats, Hacks, Exploits und Third-Party-Programme sind <strong>verboten</strong> und führen zur sofortigen Disqualifikation.</li>
+        <li><strong>Replays</strong> aller Spiele müssen aufgezeichnet und auf Anfrage eingereicht werden können.</li>
+        <li>Streitigkeiten werden von den <strong>Turnierrichtern</strong> entschieden. Deren Urteil ist endgültig.</li>
+        <li>Toxisches Verhalten, Beleidigungen oder Harassment im Chat führt zur Disqualifikation ohne Rückerstattung.</li>
+        <li>Die Turnierleitung behält sich das Recht vor, Spieler bei schwerwiegenden Verstößen nachträglich zu disqualifizieren.</li>
+      </ul>
+
+      <div class="section-heading">Mappool</div>
+      <ul class="rules-list">
+        <li><strong>Echo Isles</strong> — Klassische Zweikampfkarte mit ausgewogenen Startpositionen.</li>
+        <li><strong>Twisted Meadows</strong> — Asymmetrisch, hohes Potential für frühe Aggression.</li>
+        <li><strong>Amazonia</strong> — Waldreiche Karte, ideal für Nachtelfen-Strategien.</li>
+        <li><strong>Tirisfal Glades</strong> — Heimkarte der Untoten — für alle Rassen spielbar.</li>
+        <li><strong>Plunder Isle</strong> — Wasserbasierte Map mit strategischen Engpässen.</li>
+      </ul>
+
+      <div class="section-heading">Preisverteilung</div>
+      <ul class="rules-list">
+        <li>Der <strong>Gesamtpreispool</strong> beträgt 350 €, finanziert durch Teilnahmegebühren und Sponsoren.</li>
+        <li>Preise werden innerhalb von <strong>14 Tagen</strong> nach Turnierende via PayPal ausgezahlt.</li>
+        <li>Steuern und Abgaben trägt der Gewinner selbst, gemäß den Gesetzen seines Wohnsitzlandes.</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    ❄ &nbsp; Warcraft III: The Frozen Throne Turnier &nbsp; ❄ &nbsp; © 2025 WC3 Community &nbsp; ❄
+    <br><br>
+    <span style="opacity:0.4">Warcraft III ist ein eingetragenes Markenzeichen von Blizzard Entertainment.</span>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── TAB LOGIC ───────────────────────────────────────────
+function showTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── TOAST ───────────────────────────────────────────────
+function showToast(msg, dur=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.display='none'; }, dur);
+}
+
+// ─── RACE PICKER ─────────────────────────────────────────
+let selectedRace = null;
+function selectRace(el, race) {
+  document.querySelectorAll('.race-opt').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRace = race;
+}
+
+// ─── REGISTER ────────────────────────────────────────────
+let registered = 0;
+const maxPlayers = 16;
+const players = [];
+
+function handleRegister() {
+  const name = document.getElementById('inputName').value.trim();
+  if (!name) { showToast('⚠ Bitte Battle.net Namen eingeben!'); return; }
+  if (!selectedRace) { showToast('⚠ Bitte eine Rasse wählen!'); return; }
+  if (registered >= maxPlayers) { showToast('❄ Alle Plätze sind bereits vergeben!'); return; }
+  registered++;
+  players.push({name, race: selectedRace});
+  document.getElementById('slotsLeft').textContent = maxPlayers - registered;
+  document.getElementById('inputName').value = '';
+  document.querySelectorAll('.race-opt').forEach(r=>r.classList.remove('selected'));
+  selectedRace = null;
+  showToast(`✔ ${name} erfolgreich angemeldet! Platz ${registered}/16`);
+  rebuildBracket();
+}
+
+// ─── BRACKET DATA ────────────────────────────────────────
+const raceIcons = {
+  'Mensch':'🧝','Untot':'💀','Ork':'🪓','Nachtelf':'🌿','?':'⚔'
+};
+const defaultPlayers = [
+  {name:'Arthas Menethil', race:'Mensch'},
+  {name:'Illidan Sturmgroll', race:'Nachtelf'},
+  {name:'Sylvanas Windläufer', race:'Untot'},
+  {name:'Thrall', race:'Ork'},
+  {name:'Malfurion Sturmangriff', race:'Nachtelf'},
+  {name:'Kel\'Thuzad', race:'Untot'},
+  {name:'Grom Höllschrei', race:'Ork'},
+  {name:'Jaina Prachtmeer', race:'Mensch'},
+  {name:'Tyrande Mondflüstern', race:'Nachtelf'},
+  {name:'Rexxar', race:'Ork'},
+  {name:'Anub\'arak', race:'Untot'},
+  {name:'Uther Lichtbringer', race:'Mensch'},
+  {name:'Akama', race:'Nachtelf'},
+  {name:'Varimathras', race:'Untot'},
+  {name:'Cairne Bluthuf', race:'Ork'},
+  {name:'Antonidas', race:'Mensch'},
+];
+
+function getSlots() {
+  const merged = [...players];
+  for (let i = merged.length; i < 16; i++) {
+    merged.push(defaultPlayers[i] || {name: 'TBD', race:'?'});
+  }
+  return merged;
+}
+
+function makeMatch(p1, p2, winnerId) {
+  const w = winnerId; // 1 or 2 or null
+  return `
+    <div class="match">
+      <div class="slot${w===1?' winner':''}">
+        <span class="slot-race">${raceIcons[p1.race]||'⚔'}</span>
+        <span class="slot-name${p1.name==='TBD'?' tbd':''}">${p1.name}</span>
+      </div>
+      <div class="slot${w===2?' winner':''}">
+        <span class="slot-race">${raceIcons[p2.race]||'⚔'}</span>
+        <span class="slot-name${p2.name==='TBD'?' tbd':''}">${p2.name}</span>
+      </div>
+    </div>`;
+}
+
+function rebuildBracket() {
+  const slots = getSlots();
+  const bracket = document.getElementById('bracket');
+
+  // Round of 16
+  const r16Matches = [];
+  for (let i=0; i<16; i+=2) r16Matches.push({p1:slots[i], p2:slots[i+1]});
+
+  const r16HTML = `
+    <div class="round">
+      <div class="round-label">Runde 1 — Achtelfinale</div>
+      ${r16Matches.map(m => `<div class="match-wrapper" style="flex:1;justify-content:center;">${makeMatch(m.p1,m.p2,null)}</div>`).join('')}
+    </div>`;
+
+  // QF
+  const qfMatches = [
+    {p1:{name:'TBD',race:'?'},p2:{name:'TBD',race:'?'}},
+    {p1:{name:'TBD',race:'?'},p2:{name:'TBD',race:'?'}},
+    {p1:{name:'TBD',race:'?'},p2:{name:'TBD',race:'?'}},
+    {p1:{name:'TBD',race:'?'},p2:{name:'TBD',race:'?'}},
+  ];
+  const qfHTML = `
+    <div class="round">
+      <div class="round-label">Viertelfinale</div>
+      ${qfMatches.map(m=>`<div class="match-wrapper" style="flex:1;justify-content:center;">${makeMatch(m.p1,m.p2,null)}</div>`).join('')}
+    </div>`;
+
+  // SF
+  const sfHTML = `
+    <div class="round">
+      <div class="round-label">Halbfinale</div>
+      ${[0,1].map(()=>`<div class="match-wrapper" style="flex:1;justify-content:center;">${makeMatch({name:'TBD',race:'?'},{name:'TBD',race:'?'},null)}</div>`).join('')}
+    </div>`;
+
+  // Final
+  const finalHTML = `
+    <div class="round">
+      <div class="round-label">⚔ Finale ⚔</div>
+      <div class="match-wrapper" style="flex:1;justify-content:center;">
+        <div class="match final">
+          <div class="slot"><span class="slot-race">❄</span><span class="slot-name tbd">TBD</span></div>
+          <div class="slot"><span class="slot-race">❄</span><span class="slot-name tbd">TBD</span></div>
+        </div>
+      </div>
+    </div>`;
+
+  bracket.innerHTML = r16HTML + qfHTML + sfHTML + finalHTML;
+
+  // layout: flex column in each round, distribute height
+  document.querySelectorAll('.round').forEach(r => {
+    r.style.cssText = 'display:flex;flex-direction:column;flex:1;';
+  });
+  document.querySelectorAll('.match-wrapper').forEach(w => {
+    w.style.cssText = 'display:flex;flex:1;align-items:center;justify-content:center;';
+  });
+}
+
+rebuildBracket();
+</script>
+</body>
+</html>
